@@ -1,0 +1,2255 @@
+{
+  "schema_version": 28,
+  "standard_lib_version": 86,
+  "action_runtime_version": 70,
+  "name": "Phishing Playbook",
+  "description": "",
+  "guid": "30cc234296356e44783289051c93b5b0",
+  "slug": "phishing_playbook",
+  "agents": [
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Move email to trash",
+      "disabled": false,
+      "description": "Moves the specified message to the trash.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "542bbd0c0e01b6543204197d63fcd490",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>/trash",
+        "content_type": "application_json",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "ea8a7bbe4ddaaf96d4c902d8431a5059cad92f459d571eeb81a779006acde15a",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "VT_IP_CHECH",
+      "disabled": false,
+      "description": null,
+      "guid": "02ee0d6a4d3f78d173fbb07f6656c674",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/ip_addresses/<<email_guvenlik_analizi.sender_ip[0]>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "x-apikey": "<<CREDENTIAL.virustotal>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Move email to trash",
+      "disabled": false,
+      "description": "Moves the specified message to the trash.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "dd9e81393bab8af1d282ccc5fed13d39",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>/trash",
+        "content_type": "application_json",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "ea8a7bbe4ddaaf96d4c902d8431a5059cad92f459d571eeb81a779006acde15a",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Trigger Action",
+      "disabled": false,
+      "description": null,
+      "guid": "86171fef7771a3dd433412c116c02bd7",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=vt_ip_chech.body.data.attributes.last_analysis_stats.malicious",
+            "type": "field>value",
+            "value": "1"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "10 sn bekle",
+      "disabled": false,
+      "description": null,
+      "guid": "5a4a335e144e38aee34e2de8e331be72",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "delay",
+        "seconds": "10"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Ek Kontrolü",
+      "disabled": false,
+      "description": null,
+      "guid": "ca95b6b42f25252d65187526e5211500",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "attachments": "=LOCAL.attachments_list",
+          "count": "=LOCAL.attachment_count"
+        },
+        "local": {
+          "all_parts": "=IF_ERROR(get_an_email.body.payload.parts, [])",
+          "direct_attachments": "=IF_ERROR(FILTER(LOCAL.all_parts, LAMBDA(p, p.filename != \"\" AND IS_PRESENT(p.body.attachmentId))), [])",
+          "nested_parts": "=IF_ERROR(FLATTEN(MAP_LAMBDA(FILTER(LOCAL.all_parts, LAMBDA(p, IS_PRESENT(p.parts))), LAMBDA(p, p.parts))), [])",
+          "nested_attachments": "=IF_ERROR(FILTER(LOCAL.nested_parts, LAMBDA(sub, sub.filename != \"\" AND IS_PRESENT(sub.body.attachmentId))), [])",
+          "combined_attachments": "=IF_ERROR(CONCAT(IF_ERROR(LOCAL.direct_attachments, []), IF_ERROR(LOCAL.nested_attachments, [])), [])",
+          "attachments_list": "=IF_ERROR(MAP_LAMBDA(LOCAL.combined_attachments, LAMBDA(a, {\"filename\": a.filename, \"attachment_id\": a.body.attachmentId, \"mime_type\": a.mimeType, \"size\": a.body.size})), [])",
+          "attachment_count": "=SIZE(LOCAL.attachments_list)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Ek varmı",
+      "disabled": false,
+      "description": null,
+      "guid": "63b16d9aa434415cad3e01e926f23a9d",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=ek_kontrolu.count",
+            "type": "field>value",
+            "value": "0"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Get attachment from an email",
+      "disabled": false,
+      "description": "Gets the specified message attachment.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages.attachments",
+      "guid": "70a00cd90a1d81c99d52731a10f2cc68",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.message_id>>/attachments/<<INPUT.attachment_id>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "a2b5b6757e3860b9b225e579b8c90b5fafde3d5c17187ce9f68a0178ce59b3dc",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Black/White Kontrolu",
+      "disabled": false,
+      "description": null,
+      "guid": "ea91c305ad4738674e97747529070470",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "blacklist_durumu": "=OR(LOCAL.ip_blacklisted, LOCAL.url_blacklisted)",
+          "whitelist_durumu": "=OR(LOCAL.ip_whitelisted, LOCAL.url_whitelisted)"
+        },
+        "local": {
+          "sender_ips": "=IF_ERROR(email_guvenlik_analizi.sender_ip, [])",
+          "urls": "=IF_ERROR(email_guvenlik_analizi.urls_found, [])",
+          "blacklist": "=IF_ERROR(RESOURCE.ioc_storage.blacklist, [])",
+          "whitelist": "=IF_ERROR(RESOURCE.ioc_storage.whitelist, [])",
+          "ip_blacklisted": "=SIZE(LOCAL.sender_ips) > 0 AND SIZE(LOCAL.blacklist) > 0 AND SIZE(FILTER(LOCAL.sender_ips, LAMBDA(ip, INCLUDES(LOCAL.blacklist, ip)))) > 0",
+          "url_blacklisted": "=SIZE(LOCAL.urls) > 0 AND SIZE(LOCAL.blacklist) > 0 AND SIZE(FILTER(LOCAL.urls, LAMBDA(url, SIZE(FILTER(LOCAL.blacklist, LAMBDA(item, INCLUDES(url, item)))) > 0))) > 0",
+          "ip_whitelisted": "=SIZE(LOCAL.sender_ips) > 0 AND SIZE(LOCAL.whitelist) > 0 AND SIZE(FILTER(LOCAL.sender_ips, LAMBDA(ip, INCLUDES(LOCAL.whitelist, ip)))) > 0",
+          "url_whitelisted": "=SIZE(LOCAL.urls) > 0 AND SIZE(LOCAL.whitelist) > 0 AND SIZE(FILTER(LOCAL.urls, LAMBDA(url, SIZE(FILTER(LOCAL.whitelist, LAMBDA(item, INCLUDES(url, item)))) > 0))) > 0"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "blacklist_durumu",
+      "disabled": false,
+      "description": null,
+      "guid": "d261967f9929008b09c73f420bd8396c",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "true",
+            "path": "<<black_white_kontrolu.blacklist_durumu>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "whitelist_durumu",
+      "disabled": false,
+      "description": null,
+      "guid": "94c7295462e017f5d96c6869d97c7bfd",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "true",
+            "path": "<<black_white_kontrolu.whitelist_durumu>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Get an email",
+      "disabled": false,
+      "description": "Gets the specified message.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "0d09b6da6e94787b9cb5eaf24c1c3862",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": "=LOCAL.final_payload",
+        "local": {
+          "optional_parameters": {
+            "format": "=FORCE_ARRAY(INPUT.format)[0]",
+            "metadataHeaders": "=SPLIT(REMOVE(INPUT.metadata_headers, \" \"), \",\")"
+          },
+          "final_payload": "=REJECT(\n  LOCAL.optional_parameters,\n  LAMBDA(\n    item,\n    OR(\n      item = NULL,\n      IF(\n        OR(\n          TYPE(item) = \"TrueClass\",\n          TYPE(item) = \"FalseClass\",\n          TYPE(item) = \"Integer\"\n        ),\n        IS_EMPTY(TEXT(item)),\n        IS_EMPTY(item)\n      )\n    )\n  )\n)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "556d0f8726e31322a9a480b751a6d8aed9730a53aee3607c213f05ea65d50011",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "List emails in a mailbox",
+      "disabled": false,
+      "description": "Lists the messages in the user's mailbox.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "dd0f78b7d77b71dfe0c36cad1e8e12da",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": "=LOCAL.final_payload",
+        "local": {
+          "optional_parameters": {
+            "includeSpamTrash": "=INPUT.include_spam_trash",
+            "labelIds": "=SPLIT(REMOVE(INPUT.label_ids, \" \"), \",\")",
+            "maxResults": "=INPUT.max_results",
+            "pageToken": "=INPUT.page_token",
+            "q": "=INPUT.q"
+          },
+          "final_payload": "=REJECT(\n  LOCAL.optional_parameters,\n  LAMBDA(\n    item,\n    OR(\n      item = NULL,\n      IF(\n        OR(\n          TYPE(item) = \"TrueClass\",\n          TYPE(item) = \"FalseClass\",\n          TYPE(item) = \"Integer\"\n        ),\n        IS_EMPTY(TEXT(item)),\n        IS_EMPTY(item)\n      )\n    )\n  )\n)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "c4c286ef36c11e2367d979d4db2740be52ae66ffa0c2a41c632661e4e10eadbf",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "email_guvenlik_analizi",
+      "disabled": false,
+      "description": null,
+      "guid": "01d35df19abf76e019956058585afeda",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "sender_ip": "=LOCAL.sender_ip",
+          "urls_found": "=LOCAL.all_urls",
+          "email_body_ips": "=[]"
+        },
+        "local": {
+          "headers": "=IF_ERROR(get_an_email.body.payload.headers, [])",
+          "spf_header": "=IF(IS_PRESENT(LOCAL.headers), FIND(LOCAL.headers, LAMBDA(h, h.name = \"Received-SPF\")), null)",
+          "sender_ip": "=IF(IS_PRESENT(LOCAL.spf_header), DEFAULT(FIRST(REGEX_EXTRACT(LOCAL.spf_header.value, \"client-ip=([0-9.]+)\")), \"\"), \"\")",
+          "parts": "=get_an_email.body.payload.parts",
+          "html_nested": "=IF_ERROR(LOCAL.parts[0].parts[1].body.data, null)",
+          "text_flat": "=IF_ERROR(LOCAL.parts[0].body.data, null)",
+          "text_nested": "=IF_ERROR(LOCAL.parts[0].parts[0].body.data, null)",
+          "primary_source": "=IF(IS_PRESENT(LOCAL.html_nested), LOCAL.html_nested, IF(IS_PRESENT(LOCAL.text_flat), LOCAL.text_flat, IF(IS_PRESENT(LOCAL.text_nested), LOCAL.text_nested, \"\")))",
+          "fixed_source": "=IF(LOCAL.primary_source != \"\", REPLACE(REPLACE(LOCAL.primary_source, \"-\", \"+\"), \"_\", \"/\"), \"\")",
+          "decoded": "=IF(LOCAL.fixed_source != \"\", BASE64_DECODE(LOCAL.fixed_source), \"\")",
+          "raw_urls": "=IF(LOCAL.decoded != \"\", UNIQ(REGEX_EXTRACT(LOCAL.decoded, \"(?i)\\\\b(?:https?://)?[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}(?:/[^\\\\s<>\\\"']*)?\")), [])",
+          "all_urls": "=REJECT(LOCAL.raw_urls, LAMBDA(url, SIZE(REGEX_EXTRACT(url, \"(?i)\\\\.(png|jpe?g|gif|svg|css|js|woff2?|ttf|ico|pdf)(?:[?#].*)?$\")) > 0))"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Move email to trash",
+      "disabled": false,
+      "description": "Moves the specified message to the trash.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "1d906e8fb1f78526b2017382a8681fc8",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>/trash",
+        "content_type": "application_json",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "ea8a7bbe4ddaaf96d4c902d8431a5059cad92f459d571eeb81a779006acde15a",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "explode_attachments",
+      "disabled": false,
+      "description": null,
+      "guid": "6b7aa60e7248366511b839561f1b45c9",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "explode",
+        "path": "=ek_kontrolu.attachments",
+        "to": "individual_item"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "URL varmı",
+      "disabled": false,
+      "description": null,
+      "guid": "7c756084d43c41bc50edd890fe2831e1",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=SIZE(email_guvenlik_analizi.urls_found)",
+            "type": "field>value",
+            "value": "0"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Trigger Action",
+      "disabled": false,
+      "description": null,
+      "guid": "01d23edc9f7e2981336aec859ed66eed",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "<<vt_zararli_kontrol.malicious>>",
+            "type": "field==value",
+            "value": "true"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Move email to trash",
+      "disabled": false,
+      "description": "Moves the specified message to the trash.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "ff6b6870db5528277dc201838f90f6cb",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>/trash",
+        "content_type": "application_json",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "ea8a7bbe4ddaaf96d4c902d8431a5059cad92f459d571eeb81a779006acde15a",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Hash Ara",
+      "disabled": false,
+      "description": null,
+      "guid": "03c6facca66b6702858ca5397d48744b",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/files/<<hash_hesapla.sha256>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "x-apikey": "<<CREDENTIAL.virustotal>>"
+        },
+        "retry_on_status": [
+          "429"
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Hash Hesapla",
+      "disabled": false,
+      "description": null,
+      "guid": "8e1e42e832e6dd12bff7e15b57a276c3",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "sha256": "=SHA256(BASE64_DECODE(REPLACE(REPLACE(get_attachment_from_an_email.body.data, '-', '+'), '_', '/')))"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Hash_Bulundu",
+      "disabled": false,
+      "description": null,
+      "guid": "dcc88b73a803ffd90e3b550326552088",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "200",
+            "path": "<<hash_ara.status>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Hash_Bulunamadi",
+      "disabled": false,
+      "description": null,
+      "guid": "03dcaf5caae39fec9d212c851bd2b598",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "404",
+            "path": "<<hash_ara.status>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "VT_Zararli_Kontrol",
+      "disabled": false,
+      "description": null,
+      "guid": "5c7e9660c898a0917622c7f45a9b2b63",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "malicious": "=OR(hash_ara.body.data.attributes.last_analysis_stats.malicious > 0, hash_ara.body.data.attributes.last_analysis_stats.suspicious > 0)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Dosya_Yukle",
+      "disabled": false,
+      "description": null,
+      "guid": "5bed541d40c2ed88cdc9020eff3bd91a",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/files",
+        "content_type": "data",
+        "method": "post",
+        "payload": {
+          "file": {
+            "filename": "<<explode_attachments.individual_item.filename>>",
+            "contents": "=BASE64_DECODE(REPLACE(REPLACE(get_attachment_from_an_email.body.data, '-', '+'), '_', '/'))"
+          }
+        },
+        "headers": {
+          "X-Apikey": "<<CREDENTIAL.virustotal>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Sayac",
+      "disabled": false,
+      "description": null,
+      "guid": "f6c536934a787aa35cfa1b74a94d86e7",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "counter": "=PLUS(IF_ERROR(LAST(sayac).counter, 0), 1)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Analiz_Sorgula",
+      "disabled": false,
+      "description": null,
+      "guid": "2f3a1db53e93e4ba8084a78e9d4d69ff",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/analyses/<<dosya_yukle.body.data.id>>",
+        "content_type": "application_json",
+        "method": "get",
+        "payload": {
+          "key": "value",
+          "array_example": [
+            "foo",
+            "bar"
+          ],
+          "object_example": {
+            "key": "value"
+          }
+        },
+        "headers": {
+          "X-Apikey": "<<CREDENTIAL.virustotal>>"
+        },
+        "retry_on_status": [
+          "429"
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Tarama_Bitti",
+      "disabled": false,
+      "description": null,
+      "guid": "45ae88515cc7dd13809e87349f2cea59",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "completed",
+            "path": "<<analiz_sorgula.body.data.attributes.status>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Tarama_Devam_Ediyor",
+      "disabled": false,
+      "description": null,
+      "guid": "f78661d84772a6bf54cb4b23a6076aee",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "queued",
+            "path": "<<analiz_sorgula.body.data.attributes.status>>"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Zaman_Asimi",
+      "disabled": false,
+      "description": null,
+      "guid": "2b551bc4ed294757c977fca70a5651ec",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=\"sayac.counter\"",
+            "type": "field>value",
+            "value": "20"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Upload_Sonuc",
+      "disabled": false,
+      "description": null,
+      "guid": "657c57ef18563d47c1dc230a52f6eace",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "malicious_skor": "=analiz_sorgula.body.data.attributes.stats.malicious"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Trigger Action",
+      "disabled": false,
+      "description": null,
+      "guid": "61ad6c975fd0f25e24521b44d0225c77",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=upload_sonuc.malicious_skor",
+            "type": "field>value",
+            "value": "0"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "Move email to trash",
+      "disabled": false,
+      "description": "Moves the specified message to the trash.\n\nLink to documentation:\nhttps://developers.google.com/gmail/api/reference/rest/v1/users.messages",
+      "guid": "ab134cb932311d928237451ec8d523d0",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://gmail.googleapis.com/gmail/v1/users/<<INPUT.user>>/messages/<<INPUT.id>>/trash",
+        "content_type": "application_json",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer <<INPUT.gmail_credential>>"
+        },
+        "payload": {}
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": "ea8a7bbe4ddaaf96d4c902d8431a5059cad92f459d571eeb81a779006acde15a",
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Bekle",
+      "disabled": false,
+      "description": null,
+      "guid": "59f8e1be4d42b9dc0a2ce2cd7d719bd5",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "delay",
+        "seconds": "20"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Hata_Sonucu",
+      "disabled": false,
+      "description": null,
+      "guid": "adc2a346d432043b48e831e441c2ad03",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "malicious": false,
+          "hata": "VT tarama zaman asimina ugradi"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "Explode_URLs",
+      "disabled": false,
+      "description": null,
+      "guid": "03747d3d4082d11b30bcb264f90c66f2",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "explode",
+        "path": "=email_guvenlik_analizi.urls_found",
+        "to": "individual_url",
+        "limit": "500"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "VT_URL_Gonder",
+      "disabled": false,
+      "description": null,
+      "guid": "07d75f78a5b133ff31a0e6202702edb5",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/urls",
+        "content_type": "form",
+        "method": "post",
+        "payload": {
+          "url": "<<explode_urls.individual_url>>"
+        },
+        "headers": {
+          "x-apikey": "<<CREDENTIAL.virustotal>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "URL_Sayac",
+      "disabled": false,
+      "description": null,
+      "guid": "6032bdf903ac93a814ccb3a0229bf6cc",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "message_only",
+        "loop": false,
+        "payload": {
+          "counter": "=IF_ERROR(URL_Sayac.counter + 1, 1)"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "VT_URL_Sorgula",
+      "disabled": false,
+      "description": null,
+      "guid": "6beec9fa9098a616eb9b7ef18065173d",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/analyses/<<vt_url_gonder.body.data.id>>",
+        "content_type": "application_json",
+        "method": "get",
+        "headers": {
+          "x-apikey": "<<CREDENTIAL.virustotal>>"
+        }
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "URL_Bitti",
+      "disabled": false,
+      "description": null,
+      "guid": "8bb3e11c131904044533062f486c6956",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "type": "field==value",
+            "value": "completed",
+            "path": "=vt_url_sorgula.body.data.attributes.status"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "URL_Devam_Ediyor",
+      "disabled": false,
+      "description": null,
+      "guid": "7093a36ab4406520e7e4721ddb7f08bd",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=vt_url_sorgula.body.data.attributes.status",
+            "type": "field!=value",
+            "value": "completed"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EventTransformationAgent",
+      "name": "URL_10sn_Bekle",
+      "disabled": false,
+      "description": null,
+      "guid": "a3be60ef374f7a3945a6beea7eb96c9b",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "mode": "delay",
+        "seconds": "10"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "URL_Zararli_Ise",
+      "disabled": false,
+      "description": null,
+      "guid": "557fd7be5539980496b959e887155111",
+      "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+      "options": {
+        "rules": [
+          {
+            "path": "=vt_url_sorgula.body.data.attributes.stats.malicious",
+            "type": "field>value",
+            "value": "0"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    }
+  ],
+  "diagram_notes": [
+    {
+      "content": "Birden fazla URL varsa bunların hepsi taranır. Herhangi biri zararlıysa mail silinir.\n",
+      "position": [
+        2580,
+        195
+      ],
+      "guid": "2e6d3ae6c353f756bead5f52a923c19f",
+      "width": 290
+    },
+    {
+      "content": "Ek kontol kısmında HASH hesaplanıp kontrol edilir Dosya yeni ise(Hash değeri yoksa) Dosya kontrole gönderilir.&#x20;\n",
+      "position": [
+        2100,
+        60
+      ],
+      "guid": "5c29accc35c28c2ccbfba1939c366f34",
+      "width": 290
+    },
+    {
+      "content": "Mail Sender İP itibarı kontrol edilir.\n",
+      "position": [
+        3105,
+        -105
+      ],
+      "guid": "851c653d5bc23b20b64488e833a070b5",
+      "width": 290
+    },
+    {
+      "content": "Mail içerisindeki URL' veya ek BLACK ve WHİTE list kontrolü yapılır. Buna göre engellenir veya müdahale edilmez.\n",
+      "position": [
+        2535,
+        -180
+      ],
+      "guid": "85112f99c600aef22dc609825cbdd114",
+      "width": 290
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "receiver": 4
+    },
+    {
+      "source": 3,
+      "receiver": 2
+    },
+    {
+      "source": 4,
+      "receiver": 3
+    },
+    {
+      "source": 5,
+      "receiver": 6
+    },
+    {
+      "source": 6,
+      "receiver": 15
+    },
+    {
+      "source": 7,
+      "receiver": 20
+    },
+    {
+      "source": 8,
+      "receiver": 10
+    },
+    {
+      "source": 9,
+      "receiver": 1,
+      "link_type": "secondary"
+    },
+    {
+      "source": 9,
+      "receiver": 5,
+      "link_type": "secondary"
+    },
+    {
+      "source": 9,
+      "receiver": 14
+    },
+    {
+      "source": 9,
+      "receiver": 16,
+      "link_type": "secondary"
+    },
+    {
+      "source": 10,
+      "receiver": 9,
+      "link_type": "secondary"
+    },
+    {
+      "source": 11,
+      "receiver": 13
+    },
+    {
+      "source": 12,
+      "receiver": 11
+    },
+    {
+      "source": 13,
+      "receiver": 8
+    },
+    {
+      "source": 15,
+      "receiver": 7
+    },
+    {
+      "source": 16,
+      "receiver": 35
+    },
+    {
+      "source": 17,
+      "receiver": 18
+    },
+    {
+      "source": 19,
+      "receiver": 21
+    },
+    {
+      "source": 19,
+      "receiver": 22
+    },
+    {
+      "source": 20,
+      "receiver": 19
+    },
+    {
+      "source": 21,
+      "receiver": 23
+    },
+    {
+      "source": 22,
+      "receiver": 24
+    },
+    {
+      "source": 23,
+      "receiver": 17
+    },
+    {
+      "source": 24,
+      "receiver": 25
+    },
+    {
+      "source": 25,
+      "receiver": 26
+    },
+    {
+      "source": 26,
+      "receiver": 27
+    },
+    {
+      "source": 26,
+      "receiver": 28
+    },
+    {
+      "source": 26,
+      "receiver": 29
+    },
+    {
+      "source": 27,
+      "receiver": 30
+    },
+    {
+      "source": 28,
+      "receiver": 33
+    },
+    {
+      "source": 29,
+      "receiver": 34
+    },
+    {
+      "source": 30,
+      "receiver": 31
+    },
+    {
+      "source": 31,
+      "receiver": 32
+    },
+    {
+      "source": 33,
+      "receiver": 25
+    },
+    {
+      "source": 35,
+      "receiver": 36
+    },
+    {
+      "source": 36,
+      "receiver": 37
+    },
+    {
+      "source": 37,
+      "receiver": 38
+    },
+    {
+      "source": 38,
+      "receiver": 39
+    },
+    {
+      "source": 38,
+      "receiver": 40
+    },
+    {
+      "source": 39,
+      "receiver": 42
+    },
+    {
+      "source": 40,
+      "receiver": 41
+    },
+    {
+      "source": 41,
+      "receiver": 37
+    },
+    {
+      "source": 42,
+      "receiver": 0
+    }
+  ],
+  "diagram_layout": "{\"01d23edc9f7e2981336aec859ed66eed\":[2145,585],\"01d35df19abf76e019956058585afeda\":[2835,-255],\"02ee0d6a4d3f78d173fbb07f6656c674\":[3240,-15],\"03747d3d4082d11b30bcb264f90c66f2\":[2865,75],\"03c6facca66b6702858ca5397d48744b\":[2400,360],\"03dcaf5caae39fec9d212c851bd2b598\":[2400,435],\"07d75f78a5b133ff31a0e6202702edb5\":[2865,150],\"0d09b6da6e94787b9cb5eaf24c1c3862\":[2835,-315],\"1d906e8fb1f78526b2017382a8681fc8\":[2670,0],\"2b551bc4ed294757c977fca70a5651ec\":[2625,750],\"2f3a1db53e93e4ba8084a78e9d4d69ff\":[2400,675],\"45ae88515cc7dd13809e87349f2cea59\":[2145,750],\"542bbd0c0e01b6543204197d63fcd490\":[2655,495],\"557fd7be5539980496b959e887155111\":[2655,435],\"59f8e1be4d42b9dc0a2ce2cd7d719bd5\":[2400,840],\"5a4a335e144e38aee34e2de8e331be72\":[3240,45],\"5bed541d40c2ed88cdc9020eff3bd91a\":[2400,510],\"5c7e9660c898a0917622c7f45a9b2b63\":[2145,510],\"6032bdf903ac93a814ccb3a0229bf6cc\":[3045,225],\"61ad6c975fd0f25e24521b44d0225c77\":[2145,915],\"63b16d9aa434415cad3e01e926f23a9d\":[2400,60],\"657c57ef18563d47c1dc230a52f6eace\":[2145,840],\"6b7aa60e7248366511b839561f1b45c9\":[2400,135],\"6beec9fa9098a616eb9b7ef18065173d\":[2850,300],\"7093a36ab4406520e7e4721ddb7f08bd\":[2850,360],\"70a00cd90a1d81c99d52731a10f2cc68\":[2145,210],\"7c756084d43c41bc50edd890fe2831e1\":[2865,0],\"86171fef7771a3dd433412c116c02bd7\":[3240,105],\"8bb3e11c131904044533062f486c6956\":[2655,360],\"8e1e42e832e6dd12bff7e15b57a276c3\":[2145,285],\"94c7295462e017f5d96c6869d97c7bfd\":[2835,-135],\"a3be60ef374f7a3945a6beea7eb96c9b\":[3045,420],\"ab134cb932311d928237451ec8d523d0\":[2145,990],\"adc2a346d432043b48e831e441c2ad03\":[2625,840],\"ca95b6b42f25252d65187526e5211500\":[2400,-15],\"d261967f9929008b09c73f420bd8396c\":[2850,-75],\"dcc88b73a803ffd90e3b550326552088\":[2145,435],\"dd0f78b7d77b71dfe0c36cad1e8e12da\":[2835,-375],\"dd9e81393bab8af1d282ccc5fed13d39\":[3240,165],\"ea91c305ad4738674e97747529070470\":[2835,-195],\"f6c536934a787aa35cfa1b74a94d86e7\":[2400,585],\"f78661d84772a6bf54cb4b23a6076aee\":[2400,750],\"ff6b6870db5528277dc201838f90f6cb\":[2145,675]}",
+  "story_library_metadata": {},
+  "monitor_failures": false,
+  "synchronous_webhooks_enabled": false,
+  "integrations": [
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to retrieve. This ID is usually retrieved using `messages.list`. The ID is also contained in the result when a message is inserted (`messages.insert`) or imported (`messages.import`).",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<list_emails_in_a_mailbox.body.messages.first.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Format",
+          "description": "The format to return the message in.",
+          "required": false,
+          "type": "OPTION",
+          "ranking": 3,
+          "value": "\"\"",
+          "options": [
+            "minimal",
+            "full",
+            "raw",
+            "metadata"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Metadata headers",
+          "description": "When given and format is `METADATA`, only include headers specified.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 4,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "0d09b6da6e94787b9cb5eaf24c1c3862",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to Trash.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "1d906e8fb1f78526b2017382a8681fc8",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to Trash.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "542bbd0c0e01b6543204197d63fcd490",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Message id",
+          "description": "The ID of the message containing the attachment.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Attachment id",
+          "description": "The ID of the attachment.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 3,
+          "value": "\"<<explode_attachments.individual_item.attachment_id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "70a00cd90a1d81c99d52731a10f2cc68",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to Trash.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "ab134cb932311d928237451ec8d523d0",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Include spam trash",
+          "description": "Include messages from `SPAM` and `TRASH` in the results.",
+          "required": false,
+          "type": "BOOLEAN",
+          "ranking": 2,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Max results",
+          "description": "Maximum number of messages to return. This field defaults to 100. The maximum allowed value for this field is 500.",
+          "required": false,
+          "type": "NUMBER",
+          "ranking": 3,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Page token",
+          "description": "Page token to retrieve a specific page of results in the list.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 4,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Label IDs",
+          "description": "Only return messages with labels that match all of the specified label IDs. Messages in a thread might have labels that other messages in the same thread don't have. To learn more, see [Manage labels on messages and threads](https://developers.google.com/gmail/api/guides/labels#manage_labels_on_messages_threads).",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 5,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "Q",
+          "description": "Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, `\"from:someuser@example.com rfc822msgid: is:unread\"`. Parameter cannot be used when accessing the api using the gmail.metadata scope.",
+          "required": false,
+          "type": "TEXT",
+          "ranking": 6,
+          "value": "\"\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": true,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "dd0f78b7d77b71dfe0c36cad1e8e12da",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to Trash.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "dd9e81393bab8af1d282ccc5fed13d39",
+      "product": "Gmail",
+      "action_options_keys": []
+    },
+    {
+      "action_inputs": [
+        {
+          "name": "Gmail credential",
+          "description": "",
+          "required": true,
+          "type": "CREDENTIAL",
+          "ranking": 0,
+          "value": "\"=CREDENTIAL.google_gmail_soar_lab\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "User",
+          "description": "The user's email address. The special value `me` can be used to indicate the authenticated user.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 1,
+          "value": "\"me\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        },
+        {
+          "name": "ID",
+          "description": "The ID of the message to Trash.",
+          "required": true,
+          "type": "TEXT",
+          "ranking": 2,
+          "value": "\"<<get_an_email.body.id>>\"",
+          "options": [
+            "Option 1",
+            "Option 2"
+          ],
+          "is_collapsed": false,
+          "sub_type": "HTML",
+          "multi_select_enabled": false,
+          "llm_json_schema": "{}"
+        }
+      ],
+      "action_guid": "ff6b6870db5528277dc201838f90f6cb",
+      "product": "Gmail",
+      "action_options_keys": []
+    }
+  ],
+  "sections": [],
+  "parent_only_send_to_story": false,
+  "send_to_story_timeout_enabled": false,
+  "send_to_story_timeout_duration_seconds": null,
+  "keep_events_for": 86400,
+  "reporting_status": true,
+  "send_to_story_enabled": false,
+  "entry_agent_guid": null,
+  "exit_agent_guids": [],
+  "api_entry_action_guids": [],
+  "api_exit_action_guids": [],
+  "send_to_story_access": null,
+  "send_to_story_access_source": 0,
+  "send_to_story_skill_use_requires_confirmation": true,
+  "pages": [],
+  "tags": [],
+  "time_saved_unit": "minutes",
+  "time_saved_value": 0,
+  "origin_story_identifier": "cloud:618b0b07883247fb1aab22ebc9a8c9c0:30cc234296356e44783289051c93b5b0",
+  "recipients": [
+    "kendiadresiniyaz@gmail.com"
+  ],
+  "integration_product": null,
+  "integration_vendor": null,
+  "llm_product_instructions": "",
+  "start_reference": null,
+  "send_to_stories": [],
+  "exported_at": "2026-03-02T09:02:51Z",
+  "icon": ":simple_weather_api:"
+}
