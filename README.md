@@ -1,6 +1,6 @@
 
 
-Videoda, gelen maildeki zararlı eki ve url'i kontrol ediyor. Ek henüz hiç taranmadığı için başta sonuç vermiyor, tarama işlemi tamamlandığında mail Trashe taşınıyor.
+Videoda, gelen maildeki zararlı eki ve url'i kontrol ediyor. Ek henüz hiç taranmadığı için başta sonuç vermiyor, tarama işlemi tamamlandığında mail Trash'e taşınıyor.
 Video playbookun nasıl çalıştığına dair fikir edinilmesi için kaydedildi. 
 
 https://github.com/user-attachments/assets/e1d42c33-b949-43dc-b099-5739d7da9175
@@ -17,7 +17,7 @@ https://github.com/user-attachments/assets/e1d42c33-b949-43dc-b099-5739d7da9175
 🚧 Eksik / Geliştirilecek
 * SPF/DKIM/DMARC fail
 * Display name spoof
-* Young domain
+* yeni domain
 
 Kullanım
 1. https://login.tines.com/ hesap aç
@@ -27,5 +27,4 @@ Kullanım
 📌 Not
 * API ler Credentials kısmından verilebilir.
 * Whitelist ve Blacklist Resources kısımları kullanılarak kurgulandı.
-* console.cloud.google.com adresinden API key alıp kendi  adresini kullandım.
 * **Google Workspace (OAuth 2.0):** Sistemin e-postaları okuyabilmesi ve silebilmesi için console.cloud.google.com üzerinden **Gmail API** alınmıştır.
